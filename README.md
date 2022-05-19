@@ -1,1 +1,1 @@
-# SnakeGame-JavaFx
+# StudentSnakeGame
