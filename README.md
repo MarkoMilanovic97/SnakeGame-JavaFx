@@ -5,7 +5,7 @@ This repository contains project written in Java.
 
 ## Repository structure
 
-* Directory [src](./src/main/java/rs/ac/bg/fon/game/snake/studentsnakegame/GameApplication.java ) contains a Java class in which represents the game. In this class all variables and controls are defined.
+* File [GameApplication](./src/main/java/rs/ac/bg/fon/game/snake/studentsnakegame/GameApplication.java ) represents a Java class that contains all the logic for the game. In this class all variables, controls and grapshics are defined.
 * Directory [img](./src/main/resources/img/) contains images which are loaded as snake food in the game.
 
 ## Setup
