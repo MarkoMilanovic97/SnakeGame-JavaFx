@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
 
+import static javafx.application.Platform.exit;
+
 public class GameApplication extends Application {
 
     //background settings
@@ -69,6 +71,9 @@ public class GameApplication extends Application {
         stage.show();
         graphicsContext = canvas.getGraphicsContext2D();
 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> runMainMenu(graphicsContext)));
+        timeline.play();
+
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -96,18 +101,27 @@ public class GameApplication extends Application {
                         currentDirection = DOWN;
                     }
                 }
+                if(keyCode == KeyCode.ESCAPE){
+                    exit();
+                }
+                if(keyCode == KeyCode.ENTER){
+                    for(int i = 0; i < 3; i++){
+                        snakeBody.add(new Point(5, ROWS / 2));
+                    }
+                    snakeHead = snakeBody.get(0);
+                    generateFood();
+
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> run(graphicsContext)));
+                    timeline.setCycleCount(Animation.INDEFINITE);
+                    timeline.play();
+                }
             }
         });
+    }
 
-        for(int i = 0; i < 3; i++){
-            snakeBody.add(new Point(5, ROWS / 2));
-        }
-        snakeHead = snakeBody.get(0);
-        generateFood();
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(130), e -> run(graphicsContext)));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+    private void runMainMenu(GraphicsContext graphicsContext){
+        drawBackground(graphicsContext);
+        drawMenu(graphicsContext);
     }
 
     private void run(GraphicsContext graphicsContext){
@@ -162,6 +176,13 @@ public class GameApplication extends Application {
                 graphicsContext.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
             }
         }
+    }
+
+    private void drawMenu(GraphicsContext graphicsContext){
+        graphicsContext.setFill(Color.YELLOW);
+        graphicsContext.setFont(new Font("Digital-7", 50));
+        graphicsContext.fillText("Press Enter to start the game", WIDTH / 7.5, HEIGHT / 3.0);
+        graphicsContext.fillText("Press Esc to quit", WIDTH / 3.5, HEIGHT / 2.0);
     }
 
     private void drawFood(GraphicsContext graphicsContext) {
