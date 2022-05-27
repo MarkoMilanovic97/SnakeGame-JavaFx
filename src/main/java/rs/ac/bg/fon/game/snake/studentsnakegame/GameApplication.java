@@ -53,6 +53,7 @@ public class GameApplication extends Application {
 
     //game settings
     private boolean gameOver;
+    private boolean inMenu = true;
     private int currentDirection;
     private int score = 0;
 
@@ -74,46 +75,47 @@ public class GameApplication extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> runMainMenu(graphicsContext)));
         timeline.play();
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                KeyCode keyCode = keyEvent.getCode();
-                if(keyCode == KeyCode.RIGHT || keyCode == KeyCode.D){
-                    if(currentDirection != LEFT){
-                        currentDirection = RIGHT;
-                    }
+        scene.setOnKeyPressed(keyEvent -> {
+            KeyCode keyCode = keyEvent.getCode();
+            if(keyCode == KeyCode.RIGHT || keyCode == KeyCode.D){
+                if(currentDirection != LEFT){
+                    currentDirection = RIGHT;
                 }
+            }
 
-                if(keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
-                    if(currentDirection != RIGHT){
-                        currentDirection = LEFT;
-                    }
+            if(keyCode == KeyCode.LEFT || keyCode == KeyCode.A){
+                if(currentDirection != RIGHT){
+                    currentDirection = LEFT;
                 }
+            }
 
-                if(keyCode == KeyCode.UP || keyCode == KeyCode.W){
-                    if(currentDirection != DOWN){
-                        currentDirection = UP;
-                    }
+            if(keyCode == KeyCode.UP || keyCode == KeyCode.W){
+                if(currentDirection != DOWN){
+                    currentDirection = UP;
                 }
+            }
 
-                if(keyCode == KeyCode.DOWN || keyCode == KeyCode.S){
-                    if(currentDirection != UP){
-                        currentDirection = DOWN;
-                    }
+            if(keyCode == KeyCode.DOWN || keyCode == KeyCode.S){
+                if(currentDirection != UP){
+                    currentDirection = DOWN;
                 }
-                if(keyCode == KeyCode.ESCAPE){
-                    exit();
-                }
-                if(keyCode == KeyCode.ENTER){
+            }
+            if(keyCode == KeyCode.ESCAPE){
+                exit();
+            }
+            if(keyCode == KeyCode.ENTER){
+                if(gameOver || inMenu){
                     for(int i = 0; i < 3; i++){
                         snakeBody.add(new Point(5, ROWS / 2));
                     }
                     snakeHead = snakeBody.get(0);
                     generateFood();
 
-                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> run(graphicsContext)));
-                    timeline.setCycleCount(Animation.INDEFINITE);
-                    timeline.play();
+                    Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(200), e -> run(graphicsContext)));
+                    timeline1.setCycleCount(Animation.INDEFINITE);
+                    timeline1.play();
+                    gameOver = false;
+                    inMenu = false;
                 }
             }
         });
@@ -222,7 +224,9 @@ public class GameApplication extends Application {
     public void gameOver(){
         if(snakeHead.x < 0 || snakeHead.y < 0 || snakeHead.x * SQUARE_SIZE >= WIDTH || snakeHead.y * SQUARE_SIZE >= HEIGHT){
             gameOver = true;
+            inMenu = true;
         }
+
 
         for(int i = 1; i < snakeBody.size(); i++){
             if(snakeHead.x == snakeBody.get(i).getX() && snakeHead.getY() == snakeBody.get(i).getY()){
