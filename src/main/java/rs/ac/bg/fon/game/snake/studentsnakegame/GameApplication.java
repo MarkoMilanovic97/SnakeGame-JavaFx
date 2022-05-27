@@ -111,13 +111,7 @@ public class GameApplication extends Application {
                     snakeHead = snakeBody.get(0);
                     generateFood();
 
-                    Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(200), e -> {
-                        try {
-                            run(graphicsContext);
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        }
-                    }));
+                    Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(200), e -> run(graphicsContext)));
                     timeline1.setCycleCount(Animation.INDEFINITE);
                     timeline1.play();
                     inMenu = false;
@@ -131,13 +125,12 @@ public class GameApplication extends Application {
         drawMenu(graphicsContext);
     }
 
-    private void run(GraphicsContext graphicsContext) throws InterruptedException {
+    private void run(GraphicsContext graphicsContext){
         if(gameOver){
             graphicsContext.setFill(Color.RED);
             graphicsContext.setFont(new Font("Digital-7", 70));
             graphicsContext.fillText("Game Over", WIDTH / 3.5, HEIGHT / 2.0);
-            Thread.sleep(2000);
-            exit();
+            return;
         }
         drawBackground(graphicsContext);
         drawFood(graphicsContext);
