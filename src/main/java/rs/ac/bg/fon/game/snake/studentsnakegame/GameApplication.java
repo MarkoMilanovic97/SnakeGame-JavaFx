@@ -104,7 +104,7 @@ public class GameApplication extends Application {
                 exit();
             }
             if(keyCode == KeyCode.ENTER){
-                if(gameOver || inMenu){
+                if(inMenu){
                     for(int i = 0; i < 3; i++){
                         snakeBody.add(new Point(5, ROWS / 2));
                     }
@@ -114,7 +114,6 @@ public class GameApplication extends Application {
                     Timeline timeline1 = new Timeline(new KeyFrame(Duration.millis(200), e -> run(graphicsContext)));
                     timeline1.setCycleCount(Animation.INDEFINITE);
                     timeline1.play();
-                    gameOver = false;
                     inMenu = false;
                 }
             }
@@ -224,7 +223,6 @@ public class GameApplication extends Application {
     public void gameOver(){
         if(snakeHead.x < 0 || snakeHead.y < 0 || snakeHead.x * SQUARE_SIZE >= WIDTH || snakeHead.y * SQUARE_SIZE >= HEIGHT){
             gameOver = true;
-            inMenu = true;
         }
 
 
